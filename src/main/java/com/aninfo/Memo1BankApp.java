@@ -113,6 +113,11 @@ public class Memo1BankApp {
 	@GetMapping("/transactions/{cbu}")
 	public Collection<Transaction> getTransactionsByCbu(@PathVariable Long cbu) { return transactionService.findByCbu(cbu); }
 
+	@DeleteMapping("/transactions/{transactionId}")
+	public void deleteTransaction(@PathVariable Long transactionId) {
+		transactionService.deleteById(transactionId);
+	}
+
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
