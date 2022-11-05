@@ -80,7 +80,7 @@ public class Memo1BankApp {
 		return accountService.deposit(cbu, sum);
 	}
 
-	@PostMapping("/transactions/{cbu}")
+	@PostMapping("/transactions")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction) {
 		Optional<Account> accountOptional = accountService.findById(transaction.getCbu());
@@ -98,6 +98,20 @@ public class Memo1BankApp {
 		transactionService.createTransaction(transaction);
 		return ResponseEntity.ok().build();
 	}
+
+	@GetMapping("/transactions")
+	public Collection<Transaction> getTransactions() {
+		return transactionService.getTransactions();
+	}
+
+	@GetMapping("/transactions/{transactionId}")
+	public ResponseEntity<Transaction> getTransaction(@PathVariable Long transactionId) {
+		Optional<Transaction> transactionOptional = transactionService.findById(transactionId);
+		return ResponseEntity.of(transactionOptional);
+	}
+
+	@GetMapping("/transactions/{cbu}")
+	public Collection<Transaction> getTransactionsByCbu(@PathVariable Long cbu) { return transactionService.findByCbu(cbu); }
 
 	@Bean
 	public Docket apiDocket() {

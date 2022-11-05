@@ -55,7 +55,7 @@ public class AccountService {
     public Account deposit(Long cbu, Double sum) {
 
         if (sum <= 0) {
-            throw new DepositNegativeSumException("Cannot deposit negative sums");
+            throw new DepositNegativeSumException("Cannot deposit non positive sums");
         }
 
         Account account = accountRepository.findAccountByCbu(cbu);

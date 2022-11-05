@@ -1,13 +1,11 @@
 package com.aninfo.service;
 
-import com.aninfo.exceptions.DepositNegativeSumException;
-import com.aninfo.exceptions.InsufficientFundsException;
 import com.aninfo.model.Transaction;
 import com.aninfo.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -24,7 +22,18 @@ public class TransactionService {
 
     public Collection<Transaction> getTransactions() { return transactionRepository.findAll(); }
 
-    public Optional<Transaction> findByCbu(Long cbu) { return transactionRepository.findById(cbu); }
+    public Optional<Transaction> findById(Long transactionId) { return transactionRepository.findById(transactionId); }
+    public Collection<Transaction> findByCbu(Long cbu) {
+        Collection<Transaction> cbuTransactions = new ArrayList<>();
+
+        for (Transaction transaction: transactionRepository.findAll()) {
+            if (transaction.getCbu().equals(cbu)) {
+                cbuTransactions.add(transaction);
+            }
+        }
+
+        return cbuTransactions;
+    }
 
     public void save(Transaction transaction) { transactionRepository.save(transaction); }
 
