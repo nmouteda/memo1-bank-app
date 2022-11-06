@@ -13,7 +13,7 @@ import cucumber.api.java.en.When;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class AccountOperationsTest extends AccountIntegrationServiceTest {
+public class TransactionOperationsTest extends AccountIntegrationServiceTest {
 
     private Account account;
     private InsufficientFundsException ife;
