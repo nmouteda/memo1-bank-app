@@ -70,6 +70,7 @@ public class Memo1BankApp {
 		accountService.deleteById(cbu);
 	}
 
+	/*
 	@PutMapping("/accounts/{cbu}/withdraw")
 	public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
 		return accountService.withdraw(cbu, sum);
@@ -79,6 +80,7 @@ public class Memo1BankApp {
 	public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
 		return accountService.deposit(cbu, sum);
 	}
+	 */
 
 	@PostMapping("/transactions")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -117,6 +119,8 @@ public class Memo1BankApp {
 	public void deleteTransaction(@PathVariable Long transactionId) {
 		transactionService.deleteById(transactionId);
 	}
+
+
 
 	@Bean
 	public Docket apiDocket() {
