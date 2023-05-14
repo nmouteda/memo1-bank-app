@@ -1,7 +1,9 @@
 package com.aninfo;
 
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
 import com.aninfo.service.AccountService;
+import com.aninfo.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,6 +28,9 @@ public class Memo1BankApp {
 
 	@Autowired
 	private AccountService accountService;
+
+	@Autowired
+	private TransactionService transactionService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Memo1BankApp.class, args);
@@ -65,14 +70,32 @@ public class Memo1BankApp {
 		accountService.deleteById(cbu);
 	}
 
-	@PutMapping("/accounts/{cbu}/withdraw")
-	public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
-		return accountService.withdraw(cbu, sum);
+	@PostMapping("accounts/{cbu}/transactions")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Transaction createTransaction(@RequestBody Transaction transaction) {
+		return transactionService.createTransaction(transaction);
 	}
 
-	@PutMapping("/accounts/{cbu}/deposit")
-	public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
-		return accountService.deposit(cbu, sum);
+	@GetMapping("accounts/transactions")
+	public Collection<Transaction> getTransactions() {
+		return transactionService.getTransactions();
+	}
+
+	//	get all transactions for a particular account
+	@GetMapping("accounts/transactions")
+	public Collection<Transaction> getTransactionsByCbu(@PathVariable Long cbu) {
+		return transactionService.findByCbu(cbu);
+	}
+
+	//	get transaction by id
+	@GetMapping("accounts/transactions/{id}")
+	public Optional<Transaction> getTransactionById(@PathVariable Long id) {
+		return transactionService.findById(id);
+	}
+
+	@DeleteMapping("accounts/transactions/{id}")
+	public void deleteTransactionById(@PathVariable Long id) {
+		transactionService.deleteById(id);
 	}
 
 	@Bean
@@ -84,3 +107,4 @@ public class Memo1BankApp {
 			.build();
 	}
 }
+
