@@ -9,9 +9,8 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long cbu;
-
     private Double balance;
-    @OneToMany
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Transaction> transactions;
 
     public Account(){
