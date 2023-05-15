@@ -8,9 +8,6 @@ import java.util.List;
 
 @RepositoryRestResource
 public interface TransactionRepository extends CrudRepository<Transaction, Long> {
-
-    List<Transaction> findByCbu(Long cbu);
-
     @Override
     List<Transaction> findAll();
 }

@@ -70,31 +70,28 @@ public class Memo1BankApp {
 		accountService.deleteById(cbu);
 	}
 
-	@PostMapping("accounts/{cbu}/transactions")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Transaction createTransaction(@RequestBody Transaction transaction) {
-		return transactionService.createTransaction(transaction);
+	@PutMapping("/accounts/{cbu}/withdraw")
+	public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
+		return accountService.withdraw(cbu, sum);
 	}
 
-	@GetMapping("accounts/transactions")
+	@PutMapping("/accounts/{cbu}/deposit")
+	public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
+		return accountService.deposit(cbu, sum);
+	}
+
+	@GetMapping("/transactions")
 	public Collection<Transaction> getTransactions() {
 		return transactionService.getTransactions();
 	}
 
-	//	get all transactions for a particular account
-	@GetMapping("accounts/{cbu}/transactions")
-	public Collection<Transaction> getTransactionsByCbu(@PathVariable Long cbu) {
-		return transactionService.findByCbu(cbu);
-	}
-
-	//	get transaction by id
-	@GetMapping("accounts/transactions/{id}")
-	public Optional<Transaction> getTransactionById(@PathVariable Long id) {
+	@GetMapping("/transactions/{id}")
+	public Optional<Transaction> getTransactionById(@RequestParam Long id) {
 		return transactionService.findById(id);
 	}
 
-	@DeleteMapping("accounts/transactions/{id}")
-	public void deleteTransactionById(@PathVariable Long id) {
+	@DeleteMapping("/transactions/{id}")
+	public void deleteTransactionById(@RequestParam Long id) {
 		transactionService.deleteById(id);
 	}
 

@@ -1,6 +1,7 @@
 package com.aninfo.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 public class Account {
@@ -10,6 +11,8 @@ public class Account {
     private Long cbu;
 
     private Double balance;
+    @OneToMany
+    private Collection<Transaction> transactions;
 
     public Account(){
     }
@@ -34,4 +37,7 @@ public class Account {
         this.balance = balance;
     }
 
+    public void addTransaction(Transaction transaction) { this.transactions.add(transaction); }
+
+    public Collection<Transaction> getTransactions() { return transactions; }
 }

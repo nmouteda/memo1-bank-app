@@ -1,9 +1,6 @@
 package com.aninfo.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Transaction {
@@ -15,27 +12,19 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private Long cbu;
-
     private Double sum;
-
     private TransactionType type;
-
+    @ManyToOne
+    private Account account;
     public Transaction(){
     }
 
-    public Transaction(Long cbu, Double sum, TransactionType type) {
-        this.cbu = cbu;
+    public Transaction(Double sum, TransactionType type) {
         this.sum = sum;
         this.type = type;
     }
 
     public Long getId() { return id; }
-
-    public Long getCbu() {
-        return cbu;
-    }
 
     public Double getSum() { return sum; }
 
