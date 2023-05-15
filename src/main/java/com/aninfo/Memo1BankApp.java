@@ -82,7 +82,7 @@ public class Memo1BankApp {
 	}
 
 	//	get all transactions for a particular account
-	@GetMapping("accounts/transactions")
+	@GetMapping("accounts/{cbu}/transactions")
 	public Collection<Transaction> getTransactionsByCbu(@PathVariable Long cbu) {
 		return transactionService.findByCbu(cbu);
 	}

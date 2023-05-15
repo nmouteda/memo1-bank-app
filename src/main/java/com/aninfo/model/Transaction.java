@@ -7,6 +7,11 @@ import javax.persistence.Id;
 
 @Entity
 public class Transaction {
+    public enum TransactionType {
+        DEPOSIT,
+        WITHDRAW,
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -15,12 +20,12 @@ public class Transaction {
 
     private Double sum;
 
-    private String type;
+    private TransactionType type;
 
     public Transaction(){
     }
 
-    public Transaction(Long cbu, Double sum, String type) {
+    public Transaction(Long cbu, Double sum, TransactionType type) {
         this.cbu = cbu;
         this.sum = sum;
         this.type = type;
@@ -34,7 +39,7 @@ public class Transaction {
 
     public Double getSum() { return sum; }
 
-    public String getType() {
+    public TransactionType getType() {
         return type;
     }
 }

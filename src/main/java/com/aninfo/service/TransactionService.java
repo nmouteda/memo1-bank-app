@@ -4,10 +4,11 @@ import com.aninfo.exceptions.InvalidTransactionTypeException;
 import com.aninfo.model.Transaction;
 import com.aninfo.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Optional;
-
+@Service
 public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
@@ -16,9 +17,9 @@ public class TransactionService {
     private AccountService accountService;
 
     public Transaction createTransaction(Transaction transaction) {
-        if (transaction.getType() == "Deposit") {
+        if (transaction.getType() == Transaction.TransactionType.DEPOSIT) {
             accountService.deposit(transaction.getCbu(), transaction.getSum());
-        } else if (transaction.getType() == "Withdraw") {
+        } else if (transaction.getType() == Transaction.TransactionType.WITHDRAW) {
             accountService.withdraw(transaction.getCbu(), transaction.getSum());
         } else {
             throw new InvalidTransactionTypeException("Invalid transaction type");
