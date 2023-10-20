@@ -23,16 +23,7 @@ public class AccountIntegrationServiceTest {
     }
 
     Account deposit(Account account, Double sum) {
-        if(sum >= 2000){
-            double extraSum = (10 * sum) / 100;
 
-            if(extraSum >= 500){
-                sum += 500;
-            }
-            else{
-                sum += extraSum;
-            }
-        }
         return accountService.deposit(account.getCbu(), sum);
     }
 
