@@ -1,6 +1,8 @@
 package com.aninfo.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+
 
 @Entity
 public class Account {
@@ -11,11 +13,15 @@ public class Account {
 
     private Double balance;
 
+    private ArrayList<Long> transactions;
+
     public Account(){
+        this.transactions = new ArrayList<Long>();
     }
 
     public Account(Double balance) {
         this.balance = balance;
+        this.transactions = new ArrayList<Long>();
     }
 
     public Long getCbu() {
@@ -30,8 +36,39 @@ public class Account {
         return balance;
     }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
+
+   private Transaction createTransaction(Double sum,TransactionType type) {
+        Transaction transaction = new Transaction(sum,type,this.cbu);
+        return transaction;
+    }
+    public void addTransaction(Transaction transaction)
+    {
+        if( this.transactions == null)
+        {
+            System.out.print("no hay transacciones");
+        }
+        if (transaction == null)
+        {
+            System.out.print("no hay transaccion");
+        }
+        if (transaction.getId() == null)
+        {
+            System.out.print("no hay tiene id");
+        }
+
+        this.transactions.add(transaction.getId());
+    }
+
+    public Transaction withdraw(Double sum)
+    {
+        this.balance -= sum;
+        return createTransaction(sum,TransactionType.Extraction);
+    }
+
+    public Transaction deposit(Double sum)
+    {
+        this.balance += sum;
+        return createTransaction(sum,TransactionType.Deposit);
     }
 
 }
