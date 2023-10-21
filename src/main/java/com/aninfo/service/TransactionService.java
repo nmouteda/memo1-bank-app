@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TransactionService {
@@ -39,5 +36,9 @@ public class TransactionService {
 
     public Collection<Transaction> getTransactions() {
         return transactionRepository.findAll();
+    }
+
+    public Collection<Transaction> getTransactionsByCbu( ArrayList<Long> ids) {
+        return transactionRepository.findAllById(ids);
     }
 }

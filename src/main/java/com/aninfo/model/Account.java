@@ -71,4 +71,22 @@ public class Account {
         return createTransaction(sum,TransactionType.Deposit);
     }
 
+    public ArrayList<Long> getTransactions() {
+        return this.transactions;
+    }
+
+    private void restoreBalance(Double sum,TransactionType type)
+    {
+        if (type.equals(TransactionType.Extraction) )
+        {
+            this.balance += sum;
+        }
+        this.balance -= sum;
+    }
+
+    public Account deleteTransaction(Transaction transaction) {
+        this.transactions.remove(transaction.getId());
+        restoreBalance(transaction.getSum(),transaction.getType());
+        return this;
+    }
 }

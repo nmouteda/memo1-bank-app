@@ -2,6 +2,7 @@ package com.aninfo.service;
 
 import com.aninfo.exceptions.DepositNegativeSumException;
 import com.aninfo.exceptions.InsufficientFundsException;
+import com.aninfo.exceptions.NonExistentTransactionException;
 import com.aninfo.model.Account;
 import com.aninfo.model.Transaction;
 import com.aninfo.model.TransactionType;
@@ -75,5 +76,22 @@ public class AccountService {
 
     public Collection<Transaction> getTransactions() {
         return transactionService.getTransactions();
+    }
+
+    public Collection<Transaction> getTransactionsByAccount(Long cbu) {
+        Account account = accountRepository.findAccountByCbu(cbu);
+        return transactionService.getTransactionsByCbu(account.getTransactions());
+    }
+
+    public void deleteTransaction(Long id) {
+        Optional<Transaction> transaction = transactionService.findById(id);
+        if (transaction.isEmpty())
+        {
+            throw new NonExistentTransactionException("Transaction not found");
+        }
+        Account account = accountRepository.findAccountByCbu(transaction.get().getAccCbu());
+        account = account.deleteTransaction(transaction.get());
+        transactionService.deleteById(id);
+        save(account);
     }
 }

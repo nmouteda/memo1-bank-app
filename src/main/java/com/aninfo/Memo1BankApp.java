@@ -80,6 +80,14 @@ public class Memo1BankApp {
 	public Collection<Transaction> getTransactions() {
 		return accountService.getTransactions();
 	}
+	@GetMapping("/accounts/{cbu}/transactions")
+	public Collection<Transaction> getTransactionsbyAccount(@PathVariable Long cbu) {
+		return accountService.getTransactionsByAccount(cbu);
+	}
+	@DeleteMapping("/accounts/{cbu}/transactions/{id}")
+	public void deleteTransaction(@PathVariable Long id) {
+		accountService.deleteTransaction(id);
+	}
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
