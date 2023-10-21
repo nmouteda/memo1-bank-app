@@ -73,4 +73,7 @@ public class AccountService {
         return account;
     }
 
+    public Collection<Transaction> getTransactions() {
+        return transactionService.getTransactions();
+    }
 }

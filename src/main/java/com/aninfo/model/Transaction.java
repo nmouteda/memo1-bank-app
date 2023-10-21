@@ -9,9 +9,9 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    Long accCbu;
-    Double sum;
-    TransactionType type;
+    private Long accCbu;
+    private Double sum;
+    private TransactionType type;
 
 
     public Transaction()
@@ -26,6 +26,21 @@ public class Transaction {
 
     public Long getId() {
         return this.id;
+    }
+
+    public Double getSum()
+    {
+        return this.sum;
+    }
+
+    public TransactionType getType()
+    {
+        return this.type;
+    }
+
+    public Long getAccCbu()
+    {
+        return this.accCbu;
     }
 }
 

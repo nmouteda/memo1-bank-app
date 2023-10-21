@@ -36,4 +36,8 @@ public class TransactionService {
     public void deleteById(Long id) {
         transactionRepository.deleteById(id);
     }
+
+    public Collection<Transaction> getTransactions() {
+        return transactionRepository.findAll();
+    }
 }
