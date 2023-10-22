@@ -59,4 +59,12 @@ public class Account {
         return transactions;
     }
 
+    public Double getPromo() {
+        return promo;
+    }
+
+    public void setPromo(Double promo) {
+        this.promo = promo;
+    }
+
 }

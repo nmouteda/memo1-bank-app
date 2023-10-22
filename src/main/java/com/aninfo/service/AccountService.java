@@ -78,6 +78,14 @@ public class AccountService {
 
         account.setBalance(account.getBalance() + sum);
         account.addTransaction(new Transaction(sum, TransactionType.DEPOSIT));
+        
+        if (sum >= 2000 && account.getPromo() > 0){
+            Double promoApplied = Math.min(sum * 0.1, account.getPromo());
+            account.setBalance(account.getBalance() + promoApplied);
+            account.setPromo(account.getPromo() - promoApplied);
+            account.addTransaction(new Transaction(promoApplied, TransactionType.PROMO));
+        }
+
         accountRepository.save(account);
 
         return account;
