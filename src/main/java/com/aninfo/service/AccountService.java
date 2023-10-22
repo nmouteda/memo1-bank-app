@@ -29,7 +29,7 @@ public class AccountService {
         public void applyPromo(Account account) {
             var currentBalance = account.getBalance();
             float discount = 0.10F;
-            if(!account.maxCapReached(maxCap))
+            if(!account.maxCapReached(maxCap) && sum >= 2000)
                 account.setBalance(currentBalance+ this.sum * discount);
         }
 
@@ -83,10 +83,8 @@ public class AccountService {
         account.setBalance(account.getBalance() + sum);
         accountRepository.save(account);
 
-        if(sum >= 2000) {
-            BankAccountPromo promo = new DepositPromo(sum);
-            promo.applyPromo(account);
-        }
+        BankAccountPromo promo = new DepositPromo(sum);
+        promo.applyPromo(account);
 
         return account;
     }
