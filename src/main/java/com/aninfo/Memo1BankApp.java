@@ -34,8 +34,8 @@ public class Memo1BankApp {
 
 	@PostMapping("/accounts")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Account createAccount(@RequestBody Account account) {
-		return accountService.createAccount(account);
+	public Account createAccount(@RequestParam Double balance ) {
+		return accountService.createAccount(balance);
 	}
 
 	@GetMapping("/accounts")
@@ -76,10 +76,6 @@ public class Memo1BankApp {
 		return accountService.deposit(cbu, sum);
 	}
 
-	@PostMapping("/accounts/{cbu}/depositWithPromo")
-	public Account depositWithPromo(@PathVariable Long cbu, @RequestParam Double sum) {
-		return accountService.depositWithPromo(cbu, sum);
-	}
 
 	@GetMapping("/transactions")
 	public Collection<Transaction> getTransactions() {

@@ -47,10 +47,6 @@ public class AccountOperationsTest extends AccountIntegrationServiceTest {
         }
     }
 
-    @When("^Trying to promo deposit (\\d+)$")
-    public void tryingToPromoDeposit(int sum) {
-        account = depositWithPromo(account, Double.valueOf(sum));
-    }
 
 
     @Then("^Account balance should be (\\d+)$")

@@ -20,7 +20,7 @@ public class Account {
     }
 
     public Account(Double balance) {
-        this.balance = balance;
+        this.balance = Double.valueOf(0);
         this.transactions = new ArrayList<Long>();
     }
 
@@ -43,19 +43,6 @@ public class Account {
     }
     public void addTransaction(Transaction transaction)
     {
-        if( this.transactions == null)
-        {
-            System.out.print("no hay transacciones");
-        }
-        if (transaction == null)
-        {
-            System.out.print("no hay transaccion");
-        }
-        if (transaction.getId() == null)
-        {
-            System.out.print("no hay tiene id");
-        }
-
         this.transactions.add(transaction.getId());
     }
 
@@ -80,8 +67,13 @@ public class Account {
         if (type.equals(TransactionType.Extraction) )
         {
             this.balance += sum;
+
         }
-        this.balance -= sum;
+        else
+        {
+            this.balance -= sum;
+        }
+
     }
 
     public Account deleteTransaction(Transaction transaction) {

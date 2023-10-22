@@ -17,7 +17,7 @@ public class AccountIntegrationServiceTest {
     AccountService accountService;
 
     Account createAccount(Double balance) {
-        return accountService.createAccount(new Account(balance));
+        return accountService.createAccount(balance);
     }
 
     Account withdraw(Account account, Double sum) {
@@ -28,8 +28,6 @@ public class AccountIntegrationServiceTest {
         return accountService.deposit(account.getCbu(), sum);
     }
 
-    public Account depositWithPromo(Account account, Double sum) {
-        return accountService.depositWithPromo(account.getCbu(), sum);
-    }
+
 
 }

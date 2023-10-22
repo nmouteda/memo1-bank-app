@@ -23,8 +23,10 @@ public class AccountService {
     @Autowired
     private TransactionService transactionService;
 
-    public Account createAccount(Account account) {
-        return accountRepository.save(account);
+    public Account createAccount(Double balance) {
+        Account account = new Account(balance);
+        save(account);
+        return createDeposit(account,balance);
     }
 
     public Collection<Account> getAccounts() {
@@ -64,15 +66,20 @@ public class AccountService {
         if (sum <= 0) {
             throw new DepositNegativeSumException("Cannot deposit negative sums");
         }
+        return createDeposit(accountRepository.findAccountByCbu(cbu),sum);
+    }
 
-        Account account = accountRepository.findAccountByCbu(cbu);
-        Transaction transaction = account.deposit(sum);
+    private Account createDeposit(Account account, Double sum)
+    {
+
+        Transaction transaction = account.deposit(applyPromo(sum));
         transaction = transactionService.createTransaction(transaction);
         account.addTransaction(transaction);
         save(account);
 
         return account;
     }
+
 
     public Collection<Transaction> getTransactions() {
         return transactionService.getTransactions();
@@ -99,7 +106,7 @@ public class AccountService {
         return transactionService.findById(id);
     }
 
-    public Account depositWithPromo(Long cbu, Double sum) {
+    private Double applyPromo(Double sum) {
         if( sum >= 2000)
         {
             if (sum*0.1 <= 500)
@@ -111,6 +118,6 @@ public class AccountService {
                 sum +=500;
             }
         }
-        return deposit(cbu,sum);
+        return sum;
     }
 }
