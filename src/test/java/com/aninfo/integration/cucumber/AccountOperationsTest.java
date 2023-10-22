@@ -47,6 +47,12 @@ public class AccountOperationsTest extends AccountIntegrationServiceTest {
         }
     }
 
+    @When("^Trying to promo deposit (\\d+)$")
+    public void tryingToPromoDeposit(int sum) {
+        account = depositWithPromo(account, Double.valueOf(sum));
+    }
+
+
     @Then("^Account balance should be (\\d+)$")
     public void account_balance_should_be(int balance) {
         assertEquals(Double.valueOf(balance), account.getBalance());
@@ -66,6 +72,8 @@ public class AccountOperationsTest extends AccountIntegrationServiceTest {
     public void account_balance_should_remain(int balance) {
         assertEquals(Double.valueOf(balance), account.getBalance());
     }
+
+
 
     @After
     public void tearDown() {

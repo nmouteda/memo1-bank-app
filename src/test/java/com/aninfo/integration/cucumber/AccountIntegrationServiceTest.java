@@ -6,6 +6,8 @@ import com.aninfo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @ContextConfiguration(classes = Memo1BankApp.class)
 @WebAppConfiguration
@@ -24,6 +26,10 @@ public class AccountIntegrationServiceTest {
 
     Account deposit(Account account, Double sum) {
         return accountService.deposit(account.getCbu(), sum);
+    }
+
+    public Account depositWithPromo(Account account, Double sum) {
+        return accountService.depositWithPromo(account.getCbu(), sum);
     }
 
 }

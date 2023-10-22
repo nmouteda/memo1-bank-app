@@ -94,4 +94,23 @@ public class AccountService {
         transactionService.deleteById(id);
         save(account);
     }
+
+    public Optional<Transaction> getTransaction(Long id) {
+        return transactionService.findById(id);
+    }
+
+    public Account depositWithPromo(Long cbu, Double sum) {
+        if( sum >= 2000)
+        {
+            if (sum*0.1 <= 500)
+            {
+                sum += sum*0.1;
+            }
+            else
+            {
+                sum +=500;
+            }
+        }
+        return deposit(cbu,sum);
+    }
 }

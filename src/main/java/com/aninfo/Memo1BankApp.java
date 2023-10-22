@@ -76,9 +76,20 @@ public class Memo1BankApp {
 		return accountService.deposit(cbu, sum);
 	}
 
+	@PostMapping("/accounts/{cbu}/depositWithPromo")
+	public Account depositWithPromo(@PathVariable Long cbu, @RequestParam Double sum) {
+		return accountService.depositWithPromo(cbu, sum);
+	}
+
 	@GetMapping("/transactions")
 	public Collection<Transaction> getTransactions() {
 		return accountService.getTransactions();
+	}
+
+	@GetMapping("/transactions/{id}")
+	public ResponseEntity<Transaction> getTransaction(Long id) {
+		Optional<Transaction> transactionOptional = accountService.getTransaction(id);
+		return ResponseEntity.of(transactionOptional);
 	}
 	@GetMapping("/accounts/{cbu}/transactions")
 	public Collection<Transaction> getTransactionsbyAccount(@PathVariable Long cbu) {
