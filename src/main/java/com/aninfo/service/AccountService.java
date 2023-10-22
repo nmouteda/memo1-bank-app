@@ -17,6 +17,21 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
+    private Double calculatePromoSum(Double sum) {
+        Double promoValue = 0.10;
+        Double promoLimit = 500.0;
+        Double promoSum = 0.0;
+
+        if (sum >= 2000) {
+            promoSum = sum * promoValue;
+            if (promoSum >= promoLimit) {
+                return promoLimit;
+            }
+        }
+
+        return promoSum;
+    }
+
     public Account createAccount(Account account) {
         return accountRepository.save(account);
     }
@@ -57,6 +72,8 @@ public class AccountService {
         if (sum <= 0) {
             throw new DepositNegativeSumException("Cannot deposit negative sums");
         }
+
+        sum += calculatePromoSum(sum);
 
         Account account = accountRepository.findAccountByCbu(cbu);
         account.setBalance(account.getBalance() + sum);
