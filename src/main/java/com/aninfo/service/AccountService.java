@@ -2,12 +2,18 @@ package com.aninfo.service;
 
 import com.aninfo.exceptions.DepositNegativeSumException;
 import com.aninfo.exceptions.InsufficientFundsException;
+import com.aninfo.exceptions.InvalidTransactionTypeException;
+import com.aninfo.exceptions.AccountNotFoundException;
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
+import com.aninfo.model.TransactionType;
 import com.aninfo.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -18,6 +24,9 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     public Account createAccount(Account account) {
+        if (account.getBalance() > 0) {
+            account.addTransaction(new Transaction(account.getBalance(), TransactionType.DEPOSIT));
+        }
         return accountRepository.save(account);
     }
 
@@ -40,12 +49,16 @@ public class AccountService {
     @Transactional
     public Account withdraw(Long cbu, Double sum) {
         Account account = accountRepository.findAccountByCbu(cbu);
+        if (account == null) {
+            throw new AccountNotFoundException("Account not found");
+        }
 
         if (account.getBalance() < sum) {
             throw new InsufficientFundsException("Insufficient funds");
         }
 
         account.setBalance(account.getBalance() - sum);
+        account.addTransaction(new Transaction(sum, TransactionType.WITHDRAW));
         accountRepository.save(account);
 
         return account;
@@ -59,10 +72,44 @@ public class AccountService {
         }
 
         Account account = accountRepository.findAccountByCbu(cbu);
+        if (account == null) {
+            throw new AccountNotFoundException("Account not found");
+        }
+
         account.setBalance(account.getBalance() + sum);
+        account.addTransaction(new Transaction(sum, TransactionType.DEPOSIT));
         accountRepository.save(account);
 
         return account;
+    }
+
+    public ArrayList<Transaction> getTransactions(Long cbu) {
+        Account account = accountRepository.findAccountByCbu(cbu);
+        if (account == null) {
+            throw new AccountNotFoundException("Account not found");
+        }
+
+        return account.getTransactions();
+    }
+
+    public Transaction getTransaction(Long cbu, int index) {
+        Account account = accountRepository.findAccountByCbu(cbu);
+        if (account == null) {
+            throw new AccountNotFoundException("Account not found");
+        }
+
+        return account.getTransaction(index);
+    }
+
+    @Transactional
+    public Account makeTransaction(Long cbu, Transaction t) {
+        if (t.getType() == TransactionType.DEPOSIT) {
+            return deposit(cbu, t.getAmount());
+        } else if (t.getType() == TransactionType.WITHDRAW) {
+            return withdraw(cbu, t.getAmount());
+        } else {
+            throw new InvalidTransactionTypeException("Invalid Transaction");
+        }
     }
 
 }
