@@ -1,6 +1,7 @@
 package com.aninfo.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Account {
@@ -11,11 +12,14 @@ public class Account {
 
     private Double balance;
 
+    private Double cap;
+
     public Account(){
     }
 
     public Account(Double balance) {
         this.balance = balance;
+        this.cap = 0.0;
     }
 
     public Long getCbu() {
@@ -34,4 +38,11 @@ public class Account {
         this.balance = balance;
     }
 
+    public void setCap(Double cap){this.cap = cap;}
+    public Double getCap(){return this.cap;}
+
+    public boolean maxCapReached(Double maxCap) {
+        return this.cap.equals(maxCap);
+
+    }
 }

@@ -14,6 +14,27 @@ import java.util.Optional;
 @Service
 public class AccountService {
 
+    @FunctionalInterface
+    public interface BankAccountPromo{
+        void applyPromo(Account account);
+    }
+
+    private static class DepositPromo implements BankAccountPromo{
+        private final Double maxCap = 500.0;
+        private Double sum;
+        public DepositPromo(Double sum){
+            this.sum = sum;
+        }
+        @Override
+        public void applyPromo(Account account) {
+            var currentBalance = account.getBalance();
+            float discount = 0.10F;
+            if(!account.maxCapReached(maxCap))
+                account.setBalance(currentBalance+ this.sum * discount);
+        }
+
+    }
+
     @Autowired
     private AccountRepository accountRepository;
 
@@ -44,8 +65,8 @@ public class AccountService {
         if (account.getBalance() < sum) {
             throw new InsufficientFundsException("Insufficient funds");
         }
-
         account.setBalance(account.getBalance() - sum);
+
         accountRepository.save(account);
 
         return account;
@@ -61,6 +82,11 @@ public class AccountService {
         Account account = accountRepository.findAccountByCbu(cbu);
         account.setBalance(account.getBalance() + sum);
         accountRepository.save(account);
+
+        if(sum >= 2000) {
+            BankAccountPromo promo = new DepositPromo(sum);
+            promo.applyPromo(account);
+        }
 
         return account;
     }
