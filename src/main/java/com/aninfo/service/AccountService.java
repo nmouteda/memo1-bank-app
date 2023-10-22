@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 @Service
 public class AccountService {
@@ -20,19 +21,21 @@ public class AccountService {
     }
 
     private static class DepositPromo implements BankAccountPromo{
-        private final Double maxCap = 500.0;
+        private final Double MAXCAP = 500.0;
         private Double sum;
+        private final float DISCOUNT = 0.10F;
         public DepositPromo(Double sum){
             this.sum = sum;
         }
         @Override
-        public void applyPromo(Account account) {
-            var currentBalance = account.getBalance();
-            float discount = 0.10F;
-            if(!account.maxCapReached(maxCap) && sum >= 2000)
-                account.setBalance(currentBalance+ this.sum * discount);
-        }
-
+            public void applyPromo(Account account) {
+                var currentBalance = account.getBalance();
+                if(!account.maxCapReached(MAXCAP) && sum >= 2000) {
+                    Double extra = Math.min(this.sum * DISCOUNT, MAXCAP - account.getCap());
+                    account.setBalance(currentBalance + extra);
+                    account.setCap(account.getCap()+extra);
+                }
+            }
     }
 
     @Autowired
@@ -78,6 +81,7 @@ public class AccountService {
         if (sum <= 0) {
             throw new DepositNegativeSumException("Cannot deposit negative sums");
         }
+
 
         Account account = accountRepository.findAccountByCbu(cbu);
         account.setBalance(account.getBalance() + sum);
