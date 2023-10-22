@@ -39,8 +39,14 @@ public class AccountController {
         this.accountService.deleteById(cbu);
     }
 
-    @PutMapping("{cbu}")
+    @PatchMapping("/deposit/{cbu}")
     public void deposit(@PathVariable Long cbu, @RequestBody Double sum){
         this.accountService.deposit(cbu,sum);
     }
+
+    @PatchMapping("/withdraw/{cbu}")
+    public void withdraw(@PathVariable Long cbu, @RequestBody Double sum){
+        this.accountService.withdraw(cbu,sum);
+    }
+
 }
