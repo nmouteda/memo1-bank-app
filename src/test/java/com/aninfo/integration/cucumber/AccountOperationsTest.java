@@ -1,7 +1,7 @@
 package com.aninfo.integration.cucumber;
 
-import com.aninfo.exceptions.DepositNegativeSumException;
-import com.aninfo.exceptions.InsufficientFundsException;
+import com.aninfo.handlers.DepositNegativeSumException;
+import com.aninfo.handlers.InsufficientFundsException;
 import com.aninfo.model.Account;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
