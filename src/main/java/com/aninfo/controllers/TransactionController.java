@@ -1,10 +1,6 @@
 package com.aninfo.controllers;
 
-import com.aninfo.model.Account;
-import com.aninfo.model.Transaction;
-import com.aninfo.service.AccountService;
 import com.aninfo.service.TransactionService;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,40 +17,28 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    @Autowired
-    private AccountService accountService;
-
     @GetMapping("/transactions/{id}")
-    public ResponseEntity<Transaction> getTransaction(@PathVariable Long id) {
-        Optional<Transaction> transactionOptional = transactionService.findById(id);
-        return ResponseEntity.of(transactionOptional);
+    public ResponseEntity<?> getTransaction(@PathVariable Long id) {
+        return new ResponseEntity<>(transactionService.findById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/transactions/{id}")
-    public void deleteTransaction(@PathVariable Long id) {
-        transactionService.deleteById(id);
+    public ResponseEntity<?> deleteTransaction(@PathVariable Long id) {
+        return new ResponseEntity<>(transactionService.deleteById(id), HttpStatus.OK);
     }
 
     @GetMapping("/transactions")
     public ResponseEntity<?> getTransactions(@RequestParam Long cbu) {
-        Optional<Account> accountOptional = accountService.findById(cbu);
-        if (accountOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return new ResponseEntity<>(accountOptional.get().getTransactions(), HttpStatus.OK);
+        return new ResponseEntity<>(transactionService.getAllTransactionsFromAccount(cbu), HttpStatus.OK);
     }
 
     @PutMapping("/withdraw/{cbu}")
-    public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
-        return transactionService.withdraw(cbu, sum);
+    public ResponseEntity<?> withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
+        return new ResponseEntity<>(transactionService.withdraw(cbu, sum), HttpStatus.OK);
     }
 
     @PutMapping("/deposit/{cbu}")
-    public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
-        return transactionService.deposit(cbu, sum);
+    public ResponseEntity<?> deposit(@PathVariable Long cbu, @RequestParam Double sum) {
+        return new ResponseEntity<>(transactionService.deposit(cbu, sum), HttpStatus.OK);
     }
-
-
-
-
 }

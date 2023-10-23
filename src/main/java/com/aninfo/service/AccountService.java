@@ -1,5 +1,7 @@
 package com.aninfo.service;
 
+import com.aninfo.dtos.MessageDTO;
+import com.aninfo.handlers.AccountNotFoundException;
 import com.aninfo.model.Account;
 import com.aninfo.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +23,24 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    public Optional<Account> findById(Long cbu) {
-        return accountRepository.findById(cbu);
+    public Account findById(Long cbu) {
+        Optional<Account> accountOptional = accountRepository.findById(cbu);
+        if (accountOptional.isEmpty()) {
+            throw new AccountNotFoundException("Account not found");
+        }
+        return accountOptional.get();
     }
 
     public void save(Account account) {
         accountRepository.save(account);
     }
 
-    public void deleteById(Long cbu) {
-        accountRepository.deleteById(cbu);
+    public MessageDTO deleteById(Long cbu) {
+        try {
+            accountRepository.deleteById(cbu);
+            return new MessageDTO("Delete success");
+        } catch (Exception e) {
+            throw new AccountNotFoundException("Account not found");
+        }
     }
-
-
-
 }
