@@ -127,6 +127,15 @@ public class AccountService {
 
     @Transactional
     public void deleteTransaction(Long cbu, Long transactionNumber) {
+        Optional<Transaction> transaction = transactionRepository.findById(transactionNumber);
+        Optional<Account> account = accountRepository.findById(cbu);
+
+        if(transaction.get().getTransactionType() == "deposit"){
+            account.get().setBalance(account.get().getBalance() - transaction.get().getSum());
+        }else{
+            account.get().setBalance(account.get().getBalance() + transaction.get().getSum());
+        }
+        accountRepository.save(account.get());
         transactionRepository.deleteByAccountCbuAndTransactionNumber(cbu, transactionNumber);
     }
 
