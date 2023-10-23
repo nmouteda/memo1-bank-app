@@ -10,4 +10,5 @@ import java.util.List;
 public interface TransactionRepository extends CrudRepository<Transaction,Long> {
     List<Transaction> findByAccountCbu(Long cbu);
     Transaction findByAccountCbuAndTransactionNumber(Long cbu, Long transactionNumber);
+    void deleteByAccountCbuAndTransactionNumber(Long cbu, Long transactionNumber);
 }

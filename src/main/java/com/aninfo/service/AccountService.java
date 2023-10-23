@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 @Service
 public class AccountService {
 
+
+
     @FunctionalInterface
     public interface BankAccountPromo {
         void applyPromo(Account account);
@@ -122,4 +124,10 @@ public class AccountService {
     public Transaction getTransaction(Long cbu, Long transactionNumber){
         return transactionRepository.findByAccountCbuAndTransactionNumber(cbu, transactionNumber);
     }
+
+    @Transactional
+    public void deleteTransaction(Long cbu, Long transactionNumber) {
+        transactionRepository.deleteByAccountCbuAndTransactionNumber(cbu, transactionNumber);
+    }
+
 }

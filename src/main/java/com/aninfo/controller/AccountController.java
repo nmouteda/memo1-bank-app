@@ -64,4 +64,9 @@ public class AccountController {
         return ResponseEntity.ok(transaction);
     }
 
+    @DeleteMapping("/transaction/delete/by/{cbu}/{transactionNumber}")
+    public void delete_transaction(@PathVariable Long cbu, @PathVariable Long transactionNumber){
+        this.accountService.deleteTransaction(cbu,transactionNumber);
+    }
+
 }
