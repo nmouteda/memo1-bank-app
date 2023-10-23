@@ -3,14 +3,18 @@ package com.aninfo.service;
 import com.aninfo.exceptions.DepositNegativeSumException;
 import com.aninfo.exceptions.InsufficientFundsException;
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
 import com.aninfo.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountService {
@@ -32,6 +36,9 @@ public class AccountService {
                 var currentBalance = account.getBalance();
                 if(!account.maxCapReached(MAXCAP) && sum >= 2000) {
                     Double extra = Math.min(this.sum * DISCOUNT, MAXCAP - account.getCap());
+                    DecimalFormat df = new DecimalFormat("#.###");
+                    extra = Double.parseDouble(df.format(extra));
+
                     account.setBalance(currentBalance + extra);
                     account.setCap(account.getCap()+extra);
                 }
@@ -71,7 +78,7 @@ public class AccountService {
         account.setBalance(account.getBalance() - sum);
 
         accountRepository.save(account);
-
+        account.getTransactions().add(new Transaction(sum,"withdrawal"));
         return account;
     }
 
@@ -81,16 +88,30 @@ public class AccountService {
         if (sum <= 0) {
             throw new DepositNegativeSumException("Cannot deposit negative sums");
         }
-
-
         Account account = accountRepository.findAccountByCbu(cbu);
         account.setBalance(account.getBalance() + sum);
+
         accountRepository.save(account);
+
+        account.getTransactions().add(new Transaction(sum,"deposit"));
 
         BankAccountPromo promo = new DepositPromo(sum);
         promo.applyPromo(account);
 
         return account;
+    }
+
+    public List<Transaction> showTransactions(Long cbu){
+        Account account = accountRepository.findAccountByCbu(cbu);
+        return account.getTransactions();
+    }
+    public List<String> findTransactionsByAccount(Long cbu) {
+        List<Transaction> list = accountRepository.findTransactionsByCbu(cbu);
+        return list.stream()
+                .filter(transaction -> transaction.getTransactionType() != null && transaction.getSum() != null)
+                .map(transaction -> transaction.getTransactionType() + " " + transaction.getSum())
+                .collect(Collectors.toList());
+
     }
 
 }

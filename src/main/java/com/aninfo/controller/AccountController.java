@@ -1,11 +1,13 @@
 package com.aninfo.controller;
 
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
 import com.aninfo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -49,4 +51,8 @@ public class AccountController {
         this.accountService.withdraw(cbu,sum);
     }
 
+    @GetMapping("/transactions/{cbu}")
+    public List<String> showTransactions(@PathVariable Long cbu){
+        return this.accountService.findTransactionsByAccount(cbu);
+    }
 }
