@@ -35,7 +35,11 @@ public class AccountService {
     }
 
     public Optional<Account> findById(Long cbu) {
-        return accountRepository.findById(cbu);
+        Optional<Account> account = accountRepository.findById(cbu);
+        if (!account.isPresent()) {
+            throw new AccountNotFoundException("Account not found");
+        }
+        return account;
     }
 
     public void save(Account account) {
