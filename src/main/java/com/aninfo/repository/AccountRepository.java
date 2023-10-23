@@ -12,5 +12,4 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 
     @Override
     List<Account> findAll();
-
 }
