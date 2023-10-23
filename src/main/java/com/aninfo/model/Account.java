@@ -15,10 +15,7 @@ public class Account {
     private Double balance;
 
     private Double cap;
-    @ElementCollection
-    @CollectionTable(name = "account_transactions", joinColumns = @JoinColumn(name = "account_id"))
-    @Column(name = "transaction")
-    private List<Transaction> transactions;
+
 
     public Account(){
     }
@@ -50,11 +47,5 @@ public class Account {
     public boolean maxCapReached(Double maxCap) {
         return this.cap.equals(maxCap);
     }
-    /*
-    public void registerTransaction(String type, Double sum){
-        this.transactions.add(new Transaction(type,sum));
-    }*/
-    public List<Transaction> getTransactions(){
-        return this.transactions;
-    }
+
 }

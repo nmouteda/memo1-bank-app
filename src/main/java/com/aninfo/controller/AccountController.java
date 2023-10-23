@@ -4,6 +4,7 @@ import com.aninfo.model.Account;
 import com.aninfo.model.Transaction;
 import com.aninfo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -51,8 +52,16 @@ public class AccountController {
         this.accountService.withdraw(cbu,sum);
     }
 
-    @GetMapping("/transactions/{cbu}")
-    public List<String> showTransactions(@PathVariable Long cbu){
-        return this.accountService.findTransactionsByAccount(cbu);
+    @GetMapping("/list/transactions/{cbu}/{transactionNumber}")
+    public ResponseEntity<List<Transaction>> getTransactions(@PathVariable Long cbu){
+        List<Transaction> list = accountService.getTransactions(cbu);
+        return ResponseEntity.ok(list);
     }
+
+    @GetMapping("/get/transaction/by/{cbu}/{transactionNumber}")
+    public ResponseEntity<Transaction> getTransactions(@PathVariable Long cbu,@PathVariable Long transactionNumber){
+        Transaction transaction = accountService.getTransaction(cbu,transactionNumber);
+        return ResponseEntity.ok(transaction);
+    }
+
 }

@@ -17,7 +17,5 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
     @Override
     List<Account> findAll();
 
-    @Query("SELECT t FROM Account a JOIN a.transactions t WHERE a.cbu = :cbu")
-    List<Transaction> findTransactionsByCbu(@Param("cbu") Long cbu);
 
 }
