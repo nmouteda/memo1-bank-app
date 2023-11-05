@@ -1,6 +1,9 @@
 package com.aninfo.model;
 
+import org.springframework.util.MultiValueMap;
+
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
 public class Account {
@@ -11,11 +14,15 @@ public class Account {
 
     private Double balance;
 
+    private Double cap;
+
+
     public Account(){
     }
 
     public Account(Double balance) {
         this.balance = balance;
+        this.cap = 0.0;
     }
 
     public Long getCbu() {
@@ -32,6 +39,13 @@ public class Account {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public void setCap(Double cap){this.cap = cap;}
+    public Double getCap(){return this.cap;}
+
+    public boolean maxCapReached(Double maxCap) {
+        return this.cap.equals(maxCap);
     }
 
 }
