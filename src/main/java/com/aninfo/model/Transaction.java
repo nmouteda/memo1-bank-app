@@ -13,12 +13,14 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private final TransactionType type;
+    private TransactionType type;
 
     private double amount;
 
-    private final long accountCbu;
+    private long accountCbu;
 
+
+    public Transaction(){}
 
     public Transaction(TransactionType type, double amount, long accountCbu) {
         this.type = type;
@@ -36,6 +38,10 @@ public class Transaction {
 
     public long getAccountCbu() {
         return accountCbu;
+    }
+
+    public long getId(){
+        return id;
     }
 
     public void setAmount(double amount) {

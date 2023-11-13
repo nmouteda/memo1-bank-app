@@ -67,10 +67,11 @@ public class AccountService {
         }
 
         Account account = accountRepository.findAccountByCbu(cbu);
-        account.setBalance(account.getBalance() + sum);
+        double finalSum = transactionService.createTransaction(new Transaction(TransactionType.DEPOSIT, sum, account.getCbu()));
+
+        account.setBalance(account.getBalance() + finalSum);
         accountRepository.save(account);
 
-        transactionService.createTransaction(new Transaction(TransactionType.DEPOSIT, sum, account.getCbu()));
 
 
         return account;

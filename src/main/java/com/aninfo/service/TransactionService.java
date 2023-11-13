@@ -24,7 +24,7 @@ public class TransactionService {
         return transactionRepository.findTransactionById(id);
     }
 
-    public void createTransaction(Transaction transaction) {
+    public double createTransaction(Transaction transaction) {
         double sum = transaction.getAmount();
 
         if ((transaction.getType() == TransactionType.DEPOSIT) && (sum >= MIN_PROMO)) {
@@ -37,6 +37,7 @@ public class TransactionService {
         }
 
         transactionRepository.save(transaction);
+        return transaction.getAmount();
     }
 
     public void deleteById(Long id) {
