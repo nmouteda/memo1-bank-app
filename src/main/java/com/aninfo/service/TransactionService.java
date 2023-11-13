@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 public class TransactionService {
@@ -22,6 +23,10 @@ public class TransactionService {
 
     public Transaction findById(Long id) {
         return transactionRepository.findTransactionById(id);
+    }
+
+    public List<Transaction> findByCBU(Long cbu) {
+        return transactionRepository.findByAccountCbu(cbu);
     }
 
     public double createTransaction(Transaction transaction) {

@@ -15,7 +15,7 @@ public class TransactionController {
 
     @GetMapping("/transactions/{cbu}")
     public Collection<Transaction> getTransactions(@PathVariable Long cbu) {
-        return transactionService.getTransactions();
+        return transactionService.findByCBU(cbu);
     }
 
     @GetMapping("/transactions/{cbu}/{id}")
