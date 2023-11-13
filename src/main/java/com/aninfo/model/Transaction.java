@@ -15,7 +15,7 @@ public class Transaction {
 
     private final TransactionType type;
 
-    private final double amount;
+    private double amount;
 
     private final long accountCbu;
 
@@ -36,5 +36,9 @@ public class Transaction {
 
     public long getAccountCbu() {
         return accountCbu;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 }
