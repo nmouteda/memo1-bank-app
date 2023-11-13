@@ -1,6 +1,7 @@
 package com.aninfo.service;
 
 import com.aninfo.enums.TransactionType;
+import com.aninfo.exceptions.TransactionDoesntExistException;
 import com.aninfo.model.Transaction;
 import com.aninfo.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,11 @@ public class TransactionService {
     }
 
     public void deleteById(Long id) {
-        transactionRepository.deleteById(id);
+        try {
+            transactionRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new TransactionDoesntExistException("Transaction doesn't exist");
+        }
     }
 
 }
