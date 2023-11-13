@@ -25,11 +25,12 @@ dependencies {
 	compile group: 'com.h2database', name: 'h2', version: '1.4.200'
 	//compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
 
-	testImplementation("info.cukes:cucumber-java:1.2.5")
-	testImplementation("info.cukes:cucumber-junit:1.2.5")
-	testImplementation("info.cukes:cucumber-spring:1.2.5")
-	testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
-	testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation('info.cukes:cucumber-java:1.2.6')
+	testImplementation('info.cukes:cucumber-junit:1.2.6')
+	testImplementation('info.cukes:cucumber-spring:1.2.6')
+	testImplementation('org.junit.jupiter:junit-jupiter-api:5.9.2')
+	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.2')
 
 }
 
