@@ -1,7 +1,9 @@
 package com.aninfo;
 
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
 import com.aninfo.service.AccountService;
+import com.aninfo.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,6 +28,8 @@ public class Memo1BankApp {
 
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private TransactionService transactionService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Memo1BankApp.class, args);
@@ -37,9 +41,25 @@ public class Memo1BankApp {
 		return accountService.createAccount(account);
 	}
 
+	@PostMapping("/accounts/{cbu}/Transactions")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Transaction createTransaction(@RequestBody Transaction transaction) {
+		return transactionService.createTransaction(transaction);
+	}
+
 	@GetMapping("/accounts")
 	public Collection<Account> getAccounts() {
 		return accountService.getAccounts();
+	}
+
+	@GetMapping("/accounts/{cbu}/Transactions")
+	public Collection<Transaction> getTransactions(@PathVariable Long cbu) {
+		return transactionService.getTransactions(cbu);
+	}
+
+	@GetMapping("/accounts/Transactions/{id}")
+	public Optional<Transaction> getTransaction(@PathVariable Long id) {
+		return transactionService.findById(id);
 	}
 
 	@GetMapping("/accounts/{cbu}")
@@ -65,6 +85,11 @@ public class Memo1BankApp {
 		accountService.deleteById(cbu);
 	}
 
+	@DeleteMapping("/accounts/{cbu}/Transactions/{id}")
+	public void deleteTransacion(@PathVariable Long id) {
+		transactionService.deleteById(id);
+	}
+
 	@PutMapping("/accounts/{cbu}/withdraw")
 	public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
 		return accountService.withdraw(cbu, sum);
@@ -78,9 +103,9 @@ public class Memo1BankApp {
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
-			.select()
-			.apis(RequestHandlerSelectors.any())
-			.paths(PathSelectors.any())
-			.build();
+				.select()
+				.apis(RequestHandlerSelectors.any())
+				.paths(PathSelectors.any())
+				.build();
 	}
 }
