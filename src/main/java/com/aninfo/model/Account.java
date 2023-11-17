@@ -14,8 +14,8 @@ public class Account {
     private Double balance; //Es un error grave usar doubles para balances
 
     @Lob
-    private ArrayList<Transaction> transactions = new ArrayList<Transaction>(); 
-    // Si tuviera mas tiempo lo haria en otra tabla
+    private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    // Estuve intentando meterlo en otra tabla en otra branch pero tenía problemas con Gradle
 
     private Double promo = 500.0;
 
