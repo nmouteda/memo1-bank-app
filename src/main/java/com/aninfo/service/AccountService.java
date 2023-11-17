@@ -124,4 +124,15 @@ public class AccountService {
         }
     }
 
+    @Transactional
+    public void deleteTransaction(Long cbu, int transaction_id) {
+        Account account = accountRepository.findAccountByCbu(cbu);
+        if (account == null) {
+            throw new AccountNotFoundException("Account not found");
+        }
+
+        // No se si hay que reembolzar la plata o no
+        account.deleteTransaction(transaction_id);
+    } 
+
 }

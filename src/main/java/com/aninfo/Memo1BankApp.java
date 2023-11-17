@@ -95,6 +95,11 @@ public class Memo1BankApp {
 		return accountService.makeTransaction(cbu, transaction);
 	}
 
+	@DeleteMapping("/transactions/{cbu}/{transaction_id}")
+	public void deleteTransaction(@PathVariable Long cbu, @PathVariable int transaction_id) {
+		accountService.deleteTransaction(cbu, transaction_id);
+	}
+
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
