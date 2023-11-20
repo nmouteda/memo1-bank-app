@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -26,78 +27,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Memo1BankApp {
 
-	@Autowired
-	private AccountService accountService;
-
 	public static void main(String[] args) {
 		SpringApplication.run(Memo1BankApp.class, args);
-	}
-
-	@PostMapping("/accounts")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Account createAccount(@RequestParam double balance) {
-		Account account = new Account(balance);
-		return accountService.createAccount(account);
-	}
-
-	@GetMapping("/accounts")
-	public Collection<Account> getAccounts() {
-		return accountService.getAccounts();
-	}
-
-	@GetMapping("/accounts/{cbu}")
-	public ResponseEntity<Account> getAccount(@PathVariable Long cbu) {
-		Optional<Account> accountOptional = accountService.findById(cbu);
-		return ResponseEntity.of(accountOptional);
-	}
-
-	@PutMapping("/accounts/{cbu}")
-	public ResponseEntity<Account> updateAccount(@RequestBody Account account, @PathVariable Long cbu) {
-		Optional<Account> accountOptional = accountService.findById(cbu);
-
-		if (!accountOptional.isPresent()) {
-			return ResponseEntity.notFound().build();
-		}
-		account.setCbu(cbu);
-		accountService.save(account);
-		return ResponseEntity.ok().build();
-	}
-
-	@DeleteMapping("/accounts/{cbu}")
-	public void deleteAccount(@PathVariable Long cbu) {
-		accountService.deleteById(cbu);
-	}
-
-	/* NO van a haber deposit ni withdraw de por si, solo transactions
-	@PutMapping("/accounts/{cbu}/withdraw")
-	public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
-		return accountService.withdraw(cbu, sum);
-	}
-
-	@PutMapping("/accounts/{cbu}/deposit")
-	public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
-		return accountService.deposit(cbu, sum);
-	}
-	*/
-	
-	@GetMapping("/transactions/{cbu}")
-	public ArrayList<Transaction> getTransactions(@PathVariable Long cbu) {
-		return accountService.getTransactions(cbu);
-	}
-
-	@GetMapping("/transactions/{cbu}/{transactionIndex}")
-	public Transaction getTransaction(@PathVariable Long cbu, @PathVariable int transactionIndex) {
-		return accountService.getTransaction(cbu, transactionIndex);
-	}
-
-	@PutMapping("/transactions/{cbu}")
-	public Account makeTransaction(@PathVariable Long cbu, @RequestBody Transaction transaction){
-		return accountService.makeTransaction(cbu, transaction);
-	}
-
-	@DeleteMapping("/transactions/{cbu}/{transaction_id}")
-	public void deleteTransaction(@PathVariable Long cbu, @PathVariable int transaction_id) {
-		accountService.deleteTransaction(cbu, transaction_id);
 	}
 
 	@Bean

@@ -1,6 +1,7 @@
 package com.aninfo.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -8,14 +9,13 @@ import javax.persistence.*;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cbu;
 
     private Double balance; //Es un error grave usar doubles para balances
 
-    @Lob
-    private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-    // Estuve intentando meterlo en otra tabla en otra branch pero tenía problemas con Gradle
+    @OneToMany
+    private List<Transaction> transactions;
 
     private Double promo = 500.0;
 
@@ -24,6 +24,7 @@ public class Account {
     }
 
     public Account(Double balance) {
+        this.transactions = new ArrayList<Transaction>();
         this.balance = balance;
     }
 
@@ -55,7 +56,7 @@ public class Account {
         return transactions.get(index);
     }
 
-    public ArrayList<Transaction> getTransactions() {
+    public List<Transaction> getTransactions() {
         return transactions;
     }
 
