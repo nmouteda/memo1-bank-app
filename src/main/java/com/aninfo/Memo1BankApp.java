@@ -1,6 +1,7 @@
 package com.aninfo;
 
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
 import com.aninfo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import springfox.documentation.builders.PathSelectors;
@@ -33,7 +35,8 @@ public class Memo1BankApp {
 
 	@PostMapping("/accounts")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Account createAccount(@RequestBody Account account) {
+	public Account createAccount(@RequestParam double balance) {
+		Account account = new Account(balance);
 		return accountService.createAccount(account);
 	}
 
@@ -65,6 +68,7 @@ public class Memo1BankApp {
 		accountService.deleteById(cbu);
 	}
 
+	/* NO van a haber deposit ni withdraw de por si, solo transactions
 	@PutMapping("/accounts/{cbu}/withdraw")
 	public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
 		return accountService.withdraw(cbu, sum);
@@ -73,6 +77,22 @@ public class Memo1BankApp {
 	@PutMapping("/accounts/{cbu}/deposit")
 	public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
 		return accountService.deposit(cbu, sum);
+	}
+	*/
+	
+	@GetMapping("/transactions/{cbu}")
+	public ArrayList<Transaction> getTransactions(@PathVariable Long cbu) {
+		return accountService.getTransactions(cbu);
+	}
+
+	@GetMapping("/transactions/{cbu}/{transactionIndex}")
+	public Transaction getTransaction(@PathVariable Long cbu, @PathVariable int transactionIndex) {
+		return accountService.getTransaction(cbu, transactionIndex);
+	}
+
+	@PutMapping("/transactions/{cbu}")
+	public Account makeTransaction(@PathVariable Long cbu, @RequestBody Transaction transaction){
+		return accountService.makeTransaction(cbu, transaction);
 	}
 
 	@Bean
